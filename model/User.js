@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     }, 
     password:{
         type: String,
-        require: true, 
+        required: true, 
         min:6,
     }, 
     profilePicture:{
@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema({
     toJSON: {
         virtuals: true,
         transform: (_doc, ret) => {
-            // automatically removes password field anytime we use toJson method or .json()
+            // automatically removes password field anytime we use toJson method or .json() in response
             delete ret.password;
             return ret;
         }

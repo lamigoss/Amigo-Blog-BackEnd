@@ -20,7 +20,7 @@ dotenv.config();
 
 
 
-
+//middleware 
 app.use(express.json()); 
 app.use(helmet());
 app.use(morgan("common"));

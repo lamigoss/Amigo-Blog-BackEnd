@@ -1,6 +1,5 @@
 const mongoose = require('../db/connection'); 
 
-
 const UserSchema = new mongoose.Schema({
     username:{
         type: String,
@@ -29,7 +28,17 @@ const UserSchema = new mongoose.Schema({
         default: false, 
     }, 
 },
-{timestamps: true}
+{
+    timestamps: true,
+    toJSON: {
+        virtuals: true,
+        transform: (_doc, ret) => {
+            // automatically removes password field anytime we use toJson method or .json()
+            delete ret.password;
+            return ret;
+        }
+    }
+}
 );
 
 

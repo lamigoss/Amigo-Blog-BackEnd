@@ -6,15 +6,14 @@ router.get("/", (req, res)=>{
     res.send("hello user")
 }); 
 
-router.post("/", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
     try {
-        const newUser = await User.create(req.body);
-        console.log(newUser)
-        res.status(201).json(newUser);
-    } catch (err) {
-        console.log(err)
-        next(err);
+        const password = await bcrypt.hash(req.body.password, 10);
+        const user = await User.create({ ...req.body, password });
+        return res.status(201).json(user);
+    } catch (error) {
+        return next(error);
     }
-});
+})
 
 module.exports = router; 

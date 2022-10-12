@@ -12,15 +12,14 @@ app.use(express.urlencoded({ extended: true }))
 app.use(helmet());
 app.use(morgan("common"));
 
-// app.get('/', (req, res) => {
-//     res.redirect('api/users');
-// });
+
 
 // ROUTES 
-const userController = require('./routes/UserController')
+const userController = require('./routes/UserController');
+const postController = require('./routes/PostContoller');
+
 app.use("/api/users", userController); 
-// app.use("/api/auth", authRoute); 
-// app.use("/api/posts", postRoute); 
+app.use("/api/posts", postController); 
 
 app.listen(8800,()=>{
     console.log("Backend Server is running! Local Host: 8800"); 

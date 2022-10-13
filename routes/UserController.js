@@ -19,6 +19,7 @@ router.post("/signup", async (req, res, next) => {
     const user = await User.create({ ...req.body, password });
     return res.status(201).json(user);
   } catch (error) {
+    console.log(error)
     return next(error);
   }
 });
@@ -32,8 +33,9 @@ router.post("/login", async (req, res, next) => {
     if (user.isAdmin) {
       const token = createUserToken(req, user);
       res.status(201).json({ token, user });
+      console.log(user)
     } else {
-      return res.json({ user });
+      res.json({ user });
     }
   } catch (error) {
     next(error);

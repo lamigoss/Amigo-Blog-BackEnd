@@ -4,6 +4,7 @@ cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
+
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
@@ -19,6 +20,9 @@ app.use("/api/users", userController);
 
 const blogPostController = require("./routes/blogPostController");
 app.use("/api/blogpost", blogPostController)
+
+const imageController = require("./routes/imageController");
+app.use("/api/images", imageController)
 // app.use("/api/auth", authRoute);
 // app.use("/api/posts", postRoute);
 

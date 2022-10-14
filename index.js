@@ -18,8 +18,11 @@ app.use(morgan("common"));
 const userController = require("./routes/userController");
 app.use("/api/users", userController);
 
-const blogPostController = require("./routes/blogPostController");
-app.use("/api/blogpost", blogPostController)
+// const blogPostController = require("./routes/blogPostController");
+// app.use("/api/posts", blogPostController)
+
+const postController = require("./routes/PostContoller");
+app.use("/api/posts", postController)
 
 const imageController = require("./routes/imageController");
 app.use("/api/images", imageController)

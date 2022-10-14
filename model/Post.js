@@ -2,7 +2,8 @@ const mongoose = require('../db/connection');
 
 const PostSchema = new mongoose.Schema(
     {
-    userId:{
+    imageUrl: String,
+    username:{
         type: String,
         required: true, 
     }, 

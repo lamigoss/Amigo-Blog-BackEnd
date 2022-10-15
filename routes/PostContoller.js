@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
   });
 
 //PUT update a post 
-router.put("/update/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if(post.userId === req.body.userId) {

@@ -8,7 +8,9 @@ router.post("/create", async (req, res) => {
     // const newPost = new Post.create(req.body); 
     console.log(req.body)
     try {
-      const savedPost = await Post.create(req.body); 
+      const savedPost = await Post.create(req.body)
+      console.log(savedPost)
+      const populate = await savedPost.populate('imageId')
       res.status(200).json(savedPost);
     } catch (err) {
       console.log(err)
@@ -30,7 +32,8 @@ router.get("/:id", async (req, res) => {
 router.get("/", async (req, res) => {
     
     try {
-      let posts =  await Post.find()
+      let posts =  await Post.find({})
+      console.log(posts)
       res.status(200).json(posts); 
     } catch (err) {
         return res.status(500).json(err);

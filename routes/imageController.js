@@ -36,28 +36,44 @@ const upload = multer({ storage: storage });
 
 router.get("/:imageKey", async (req, res) => {
   // find image by store Reference
-  console.log(req.params);
-  const image = await imageModel.find({ imageKey: req.params.imageKey });
+  try {
+    const image = await imageModel.find({ imageKey: req.params.imageKey });
+    
+    for(const img of image) {
+    const getObjectParams = {
+      Bucket: bucketName,
+      Key: req.params.imageKey,
+    };
+    const command = new GetObjectCommand(getObjectParams);
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+    img.imageUrl = url;
+   }
+    console.log('======image url ===== ' + image.imageUrl)
+    console.log('=========image========== ' + image)
   
-  for(const img of image) {
-  const getObjectParams = {
-    Bucket: bucketName,
-    Key: req.params.imageKey,
-  };
-  const command = new GetObjectCommand(getObjectParams);
-  const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-  img.imageUrl = url;
- }
-  console.log('======image url ===== ' + image.imageUrl)
-  console.log('=========image========== ' + image)
-
-  res.send(image);
+    res.send(image);
+  } catch (error) {
+    console.log(error)
+  }
 });
+
+router.get("/post/:imageId", async (req, res) => {
+  // find image by store Reference
+  try {
+    const image = await imageModel.findById(req.params.imageId);
+    console.log(req.params.imageId)
+    res.send(image);
+  }catch (error) {
+    console.log(error)
+  }
+
+});
+
 
 router.post("/", upload.single("image"), async (req, res) => {
   console.log(req.file);
   console.log(req.body);
-
+try {
   const randomImageKey = randomName();
 
   const params = {
@@ -77,5 +93,9 @@ router.post("/", upload.single("image"), async (req, res) => {
   // const populate = await postImage.populate('storeFront')
 
   return res.status(201).json({ body: postImage, status: true });
+
+}catch (error) {
+  console.log(error)
+}
 });
 module.exports = router;

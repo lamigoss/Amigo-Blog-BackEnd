@@ -4,7 +4,7 @@ const Post = require("../model/Post");
 
 
 //post create a new post 
-router.post("/create", async (req, res) => {
+router.post("/create/:id", async (req, res) => {
     // const newPost = new Post.create(req.body); 
     console.log(req.body)
     try {

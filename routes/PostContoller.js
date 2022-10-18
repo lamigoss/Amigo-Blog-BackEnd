@@ -8,8 +8,7 @@ router.post("/create/:id", async (req, res) => {
     // const newPost = new Post.create(req.body); 
     console.log(req.body)
     try {
-      const savedPost = await Post.create(req.body)
-      console.log(savedPost)
+      const savedPost = await Post.create({...req.body, imageId: req.params.id})
       const populate = await savedPost.populate('imageId')
       res.status(200).json(savedPost);
     } catch (err) {

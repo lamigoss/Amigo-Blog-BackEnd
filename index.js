@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-cors = require("cors");
+const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
@@ -18,16 +18,14 @@ app.use(morgan("common"));
 const userController = require("./routes/userController");
 app.use("/api/users", userController);
 
-// const blogPostController = require("./routes/blogPostController");
-// app.use("/api/posts", blogPostController)
-
 const postController = require("./routes/PostContoller");
 app.use("/api/posts", postController)
 
 const imageController = require("./routes/imageController");
 app.use("/api/images", imageController)
-// app.use("/api/auth", authRoute);
-// app.use("/api/posts", postRoute);
+
+const commentController= require("./routes/comments");
+app.use("/api/comments", commentController);
 
 app.listen(8800, () => {
   console.log("Backend Server is running! Local Host: 8800");

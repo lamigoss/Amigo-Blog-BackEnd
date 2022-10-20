@@ -32,7 +32,6 @@ router.get("/", async (req, res) => {
     
     try {
       let posts =  await Post.find({})
-      console.log(posts)
       res.status(200).json(posts); 
     } catch (err) {
         return res.status(500).json(err);
@@ -43,12 +42,18 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    const populate = await post.populate('imageId')
+
     if(post.userId === req.body.userId) {
-        await post.updateOne({$set:req.body});
+        // await post.updateOne({...req.body, imageId: req.params.id});
+        await post.replaceOne({imageId: "634e2f7a7878e16ae00d6028"}, {imageId: req.params.id});
+
+        console.log(req.params.id);
         res.status(201).json("the post has been updated");
     } 
   } catch (err) {
-    res.status(403).json("you can only update your post")
+    console.log(err);
+    res.status(403).json("you can only update your post");
 }
 });
 
@@ -61,6 +66,9 @@ router.delete("/:id", async (req, res) => {
         res.status(500).json(err); 
     }
   });
+
+ 
+      
 
 
 module.exports = router;

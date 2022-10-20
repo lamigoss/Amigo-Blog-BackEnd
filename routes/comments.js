@@ -5,7 +5,7 @@ router.post("/",  async (req, res, next)=>{
     const newComment = new Comment({...req.body, userId: req.body.userId})
  try {
     const savedComment = await newComment.save();
-    const populate = await savedComment.populate("Post");
+    const populate = await savedComment.populate("postId");
     console.log("error reslove please"+savedComment);
     res.status(200).send(savedComment);
  } catch (err) {
@@ -17,9 +17,11 @@ router.get("/:postId", async (req, res)=>{
 
  try {
     const comments = await Comment.find({postId: req.params.postId});
+    console.log(comments)
     res.status(200).json(comments);
  } catch (err) {
-     res.error();
+    next(err)
+     console.log(err);
  }
 });
 //delete a comment 

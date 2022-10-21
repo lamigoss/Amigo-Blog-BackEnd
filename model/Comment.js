@@ -2,9 +2,9 @@ const mongoose = require('../db/connection');
 
 const CommentSchema = new mongoose.Schema(
   {
-    userId: {
+    username: {
       type: String,
-      required: true,
+      required: true
     },
     postId:{
         type: mongoose.Schema.Types.ObjectId,

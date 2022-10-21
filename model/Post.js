@@ -11,7 +11,6 @@ const PostSchema = new mongoose.Schema(
         type: String, 
         required: true, 
         max: 150, 
-        unique: true,
     },
     postDesc:{
         type: String, 

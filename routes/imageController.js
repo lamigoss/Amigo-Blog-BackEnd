@@ -48,8 +48,8 @@ router.get("/:imageKey", async (req, res) => {
     const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
     img.imageUrl = url;
    }
-    console.log('======image url ===== ' + image.imageUrl)
-    console.log('=========image========== ' + image)
+    // console.log('======image url ===== ' + image.imageUrl)
+    // console.log('=========image========== ' + image)
   
     res.send(image);
   } catch (error) {

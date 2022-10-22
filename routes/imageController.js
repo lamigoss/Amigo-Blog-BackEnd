@@ -61,7 +61,7 @@ router.get("/post/:imageId", async (req, res) => {
   // find image by store Reference
   try {
     const image = await imageModel.findById(req.params.imageId);
-    console.log(req.params.imageId);
+    // console.log(req.params.imageId);
     res.send(image);
   } catch (error) {
     console.log(error);
@@ -110,24 +110,14 @@ router.delete("/:postId/:imageKey/:imageId", async (req, res) => {
       { _id: req.params.postId },
       { $unset:{imageId: ""} }
     );
-    res.json(post)
+    if(post.imageId){
+      return null
+    }else {
+      res.status(201).res.json(post)
+    }
   } catch (error) {
     console.log(error);
   }
-
-  // const image = await ImageModel.find({storeFront: req.params.id})
-  // for (const key of image) {
-  //   const params = {
-  //     Bucket: bucketName,
-  //     Key: key.imageKey
-  //   }
-  //   const command = new DeleteObjectCommand(params)
-  //   await s3.send(command)
-  // }
-  // await ImageFile.deleteMany({storeFront: req.params.id})
-  // await StoreFront.findByIdAndDelete(req.params.id)
-  // await Favorite.findOneAndDelete({ storeFront: req.params.id })
-  // res.send(image)
 });
 
 module.exports = router;

@@ -2,6 +2,7 @@ require("dotenv").config();
 const multer = require("multer");
 const router = require("express").Router();
 const imageModel = require("../model/imageModel");
+const Post = require("../model/Post");
 const {
   S3Client,
   PutObjectCommand,
@@ -10,7 +11,6 @@ const {
 } = require("@aws-sdk/client-s3");
 const crypto = require("crypto");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
 
 // RANDOMIZE UNIQUE KEYS TO UPLOAD TO AWS
 const randomName = (bytes = 16) => crypto.randomBytes(bytes).toString("hex");
@@ -38,22 +38,22 @@ router.get("/:imageKey", async (req, res) => {
   // find image by store Reference
   try {
     const image = await imageModel.find({ imageKey: req.params.imageKey });
-    
-    for(const img of image) {
-    const getObjectParams = {
-      Bucket: bucketName,
-      Key: req.params.imageKey,
-    };
-    const command = new GetObjectCommand(getObjectParams);
-    const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-    img.imageUrl = url;
-   }
+
+    for (const img of image) {
+      const getObjectParams = {
+        Bucket: bucketName,
+        Key: req.params.imageKey,
+      };
+      const command = new GetObjectCommand(getObjectParams);
+      const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+      img.imageUrl = url;
+    }
     // console.log('======image url ===== ' + image.imageUrl)
     // console.log('=========image========== ' + image)
-  
+
     res.send(image);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
 
@@ -61,41 +61,73 @@ router.get("/post/:imageId", async (req, res) => {
   // find image by store Reference
   try {
     const image = await imageModel.findById(req.params.imageId);
-    console.log(req.params.imageId)
+    console.log(req.params.imageId);
     res.send(image);
-  }catch (error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
-
 });
-
 
 router.post("/", upload.single("image"), async (req, res) => {
   console.log(req.file);
   console.log(req.body);
-try {
-  const randomImageKey = randomName();
+  try {
+    const randomImageKey = randomName();
 
-  const params = {
-    Bucket: bucketName,
-    Key: randomImageKey,
-    Body: req.file.buffer,
-    ContentType: req.file.mimetype,
-  };
+    const params = {
+      Bucket: bucketName,
+      Key: randomImageKey,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
 
-  const command = new PutObjectCommand(params);
-  await s3.send(command);
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
 
-  const postImage = await imageModel.create({
-    ...req.body,
-    imageKey: randomImageKey,
-  });
-  // const populate = await postImage.populate('storeFront')
+    const postImage = await imageModel.create({
+      ...req.body,
+      imageKey: randomImageKey,
+    });
+    // const populate = await postImage.populate('storeFront')
 
-  return res.status(201).json({ body: postImage, status: true });
-
-}catch (error) {
-  console.log(error)
-}
+    return res.status(201).json({ body: postImage, status: true });
+  } catch (error) {
+    console.log(error);
+  }
 });
+
+// DELETE IMAGE
+router.delete("/:postId/:imageKey/:imageId", async (req, res) => {
+  try {
+    const params = {
+      Bucket: bucketName,
+      Key: req.params.imageKey,
+    };
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
+    await imageModel.findOneAndDelete({ imageKey: req.params.imageKey })
+    const post = await Post.findOneAndUpdate(
+      { _id: req.params.postId },
+      { $unset:{imageId: ""} }
+    );
+    res.json(post)
+  } catch (error) {
+    console.log(error);
+  }
+
+  // const image = await ImageModel.find({storeFront: req.params.id})
+  // for (const key of image) {
+  //   const params = {
+  //     Bucket: bucketName,
+  //     Key: key.imageKey
+  //   }
+  //   const command = new DeleteObjectCommand(params)
+  //   await s3.send(command)
+  // }
+  // await ImageFile.deleteMany({storeFront: req.params.id})
+  // await StoreFront.findByIdAndDelete(req.params.id)
+  // await Favorite.findOneAndDelete({ storeFront: req.params.id })
+  // res.send(image)
+});
+
 module.exports = router;

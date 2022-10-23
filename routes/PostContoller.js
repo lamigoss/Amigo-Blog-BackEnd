@@ -39,10 +39,11 @@ router.get("/", async (req, res) => {
 });
 
 //PUT update a post
-router.put("/:id/:imageId", async (req, res) => {
+router.put("/:id/:imageId",  async (req, res) => {
+  console.log("post put requested")
   try {
-    const post = await Post.findById(req.params.id);
-    console.log("IMAGE ID " + req.params.imageId);
+    // const post = await Post.findById(req.params.id);
+    // console.log("IMAGE ID " + req.params.imageId);
 
     // await post.updateOne({...req.body, imageId: req.params.id});
     const newPost = await Post.findOneAndUpdate(
@@ -54,7 +55,7 @@ router.put("/:id/:imageId", async (req, res) => {
        }
       
     );
-    console.log(req.body)
+    console.log("this is req.body"+req.body)
     res.status(201).json(newPost);
   } catch (err) {
     console.log(err);

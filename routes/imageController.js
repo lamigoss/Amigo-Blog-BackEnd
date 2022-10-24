@@ -110,6 +110,7 @@ router.delete("/:postId/:imageKey/:imageId", async (req, res) => {
       { _id: req.params.postId },
       { $unset:{imageId: ""} }
     );
+    console.log("===== IN DELETE REQUEST ======" + post)
       res.status(201).res.json(post)
   } catch (error) {
     console.log(error);

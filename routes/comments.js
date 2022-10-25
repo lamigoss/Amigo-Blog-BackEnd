@@ -13,6 +13,8 @@ router.post("/",  async (req, res, next)=>{
      next(err);
  }
 });
+
+
 //get all comments on a post 
 router.get("/:postId", async (req, res)=>{
 
@@ -24,21 +26,20 @@ router.get("/:postId", async (req, res)=>{
      console.log(err);
  }
 });
-//delete a comment 
-router.delete("/:postId", async (req, res, next)=>{
 
- try {
-    const comment = await Comment.findById(res.params.id);
-    if(req.user.id === comment.userId){
-        await Comment.findByIdAndDelete(req.params.id); 
-        res.status(200).json("the comment has been deleted");
-    } else {
-        return res.error(403, "you can only delete your comment")
+
+//delete a comment 
+router.delete("/:postId/:commentId", async (req, res)=>{
+
+    try {
+       const post = await Comment.findOneAndDelete({_id: req.params.commentId});
+    //    const comment =  post.find({_id: req.params.commentId});
+       res.status(200).send("comment deleted");
+    } catch (err) {
+       next(err)
+        console.log(err);
     }
- } catch (err) {
-     next(err)
- }
-});
+   });
 
 
 module.exports = router; 

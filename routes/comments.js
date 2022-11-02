@@ -27,7 +27,7 @@ router.get("/:postId", async (req, res) => {
 router.delete("/:postId/:commentId", async (req, res) => {
   try {
     const post = await Comment.findOneAndDelete({ _id: req.params.commentId });
-    //    const comment =  post.find({_id: req.params.commentId});
+    //    const comment =  post.find({_id: req.params.commentId});backe
     res.status(200).send("comment deleted");
   } catch (err) {
     next(err);

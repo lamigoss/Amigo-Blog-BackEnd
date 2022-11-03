@@ -27,7 +27,8 @@ router.get("/:postId", async (req, res) => {
 router.delete("/:postId/:commentId", async (req, res) => {
   try {
     const post = await Comment.findOneAndDelete({ _id: req.params.commentId });
-    res.status(200).send("comment deleted");
+    const newPost = await Comment.find({})
+    res.status(200).send(newPost);
   } catch (err) {
     next(err);
     console.log(err);

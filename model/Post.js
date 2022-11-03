@@ -1,34 +1,32 @@
-const mongoose = require('../db/connection'); 
+const mongoose = require("../db/connection");
 
 const PostSchema = new mongoose.Schema(
-    {
+  {
     imageUrl: String,
-    username:{
-        type: String,
-        required: true, 
-    }, 
-    postTitle:{
-        type: String, 
-        required: true, 
-        max: 150, 
+    username: {
+      type: String,
+      required: true,
     },
-    postDesc:{
-        type: String, 
-        max: 550, 
+    postTitle: {
+      type: String,
+      required: true,
+      max: 150,
+    },
+    postDesc: {
+      type: String,
+      max: 550,
     },
     imageId: {
-        // type: String,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "imageModel",
-      },
-    likes: {
-        type: Array,
-        default: [],
+      // type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "imageModel",
     },
-  
-},
-    {timestamps: true}
+    likes: {
+      type: Array,
+      default: [],
+    },
+  },
+  { timestamps: true }
 );
 
-
-module.exports = mongoose.model("Post", PostSchema); 
+module.exports = mongoose.model("Post", PostSchema);

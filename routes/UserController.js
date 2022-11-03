@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
-const { createUserToken, requireToken } = require("../middleware/auth");
+const { createUserToken } = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   try {
@@ -17,9 +17,9 @@ router.post("/signup", async (req, res, next) => {
   try {
     const password = await bcrypt.hash(req.body.password, 10);
     const user = await User.create({ ...req.body, password });
-    return res.status(201).json({body: user, status: true});
+    return res.status(201).json({ body: user, status: true });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(error);
   }
 });
@@ -33,7 +33,6 @@ router.post("/login", async (req, res, next) => {
     if (user.isAdmin) {
       const token = createUserToken(req, user);
       res.status(201).json({ token, user });
-      console.log(user)
     } else {
       res.json({ user });
     }

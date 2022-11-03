@@ -35,7 +35,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.get("/:imageKey", async (req, res) => {
-  // find image by store Reference
   try {
     const image = await imageModel.find({ imageKey: req.params.imageKey });
 
@@ -48,9 +47,6 @@ router.get("/:imageKey", async (req, res) => {
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
       img.imageUrl = url;
     }
-    // console.log('======image url ===== ' + image.imageUrl)
-    // console.log('=========image========== ' + image)
-
     res.send(image);
   } catch (error) {
     console.log(error);
@@ -61,7 +57,6 @@ router.get("/post/:imageId", async (req, res) => {
   // find image by store Reference
   try {
     const image = await imageModel.findById(req.params.imageId);
-    // console.log(req.params.imageId);
     res.send(image);
   } catch (error) {
     console.log(error);
@@ -73,23 +68,18 @@ router.post("/", upload.single("image"), async (req, res) => {
   console.log(req.body);
   try {
     const randomImageKey = randomName();
-
     const params = {
       Bucket: bucketName,
       Key: randomImageKey,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
     };
-
     const command = new PutObjectCommand(params);
     await s3.send(command);
-
     const postImage = await imageModel.create({
       ...req.body,
       imageKey: randomImageKey,
     });
-    // const populate = await postImage.populate('storeFront')
-
     return res.status(201).json({ body: postImage, status: true });
   } catch (error) {
     console.log(error);
@@ -105,13 +95,12 @@ router.delete("/:postId/:imageKey/:imageId", async (req, res) => {
     };
     const command = new DeleteObjectCommand(params);
     await s3.send(command);
-    await imageModel.findOneAndDelete({ imageKey: req.params.imageKey })
+    await imageModel.findOneAndDelete({ imageKey: req.params.imageKey });
     const post = await Post.findOneAndUpdate(
       { _id: req.params.postId },
-      { $unset:{imageId: ""} }
+      { $unset: { imageId: "" } }
     );
-    console.log("===== IN DELETE REQUEST ======" + post)
-      res.status(201).res.json(post)
+    res.status(201).res.json(post);
   } catch (error) {
     console.log(error);
   }

@@ -3,7 +3,6 @@ const Post = require("../model/Post");
 
 //post create a new post
 router.post("/create/:id", async (req, res) => {
-  // const newPost = new Post.create(req.body);
   console.log(req.body);
   try {
     const savedPost = await Post.create({
@@ -43,10 +42,6 @@ router.put("/:id/:imageId",  async (req, res) => {
   console.log("post put requested")
   try {
     const post = await Post.findById(req.params.id);
-    console.log("IMAGE ID " + req.params.imageId);
-    console.log(req.body)
-    // await post.updateOne({...req.body, imageId: req.params.id});
-
       const newPost = await Post.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -55,7 +50,6 @@ router.put("/:id/:imageId",  async (req, res) => {
           imageId: req.params.imageId,
          }
          );
-         console.log(req.body)
          res.status(201).json(newPost);
   } catch (err) {
     console.log(err);
@@ -65,10 +59,6 @@ router.put("/:id/:imageId",  async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    console.log("IMAGE ID " + req.params.imageId);
-    console.log(req.body)
-    // await post.updateOne({...req.body, imageId: req.params.id});
-
       const newPost = await Post.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -76,7 +66,6 @@ router.put("/:id", async (req, res) => {
           postDesc: req.body.postDesc,
          }
          );
-         console.log(req.body)
          res.status(201).json(newPost);
   } catch (err) {
     console.log(err);

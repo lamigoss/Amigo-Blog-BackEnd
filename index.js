@@ -24,6 +24,8 @@ app.use("/api/images", imageController);
 const commentController = require("./routes/comments");
 app.use("/api/comments", commentController);
 
-app.listen(8800, () => {
+const PORT = process.env.PORT || 8080
+
+app.listen(PORT, () => {
   console.log("Backend Server is running! Local Host: 8800");
 });

@@ -12,7 +12,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-//get all comments on a post
+//get all comments on a posts
 router.get("/:postId", async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.postId });

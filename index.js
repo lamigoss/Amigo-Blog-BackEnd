@@ -12,8 +12,9 @@ app.use(helmet());
 app.use(morgan("common"));
 
 // ROUTES
-// const userController = require("./routes/userController");
-// app.use("/api/users", userController);
+//this is it
+const userController = require("./routes/UserController");
+app.use("/api/users", userController);
 
 const postController = require("./routes/PostContoller");
 app.use("/api/posts", postController);

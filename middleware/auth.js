@@ -1,7 +1,7 @@
 const passport = require('passport');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../model/user");
+const User = require("../model/User");
 require('dotenv').config()
 
 const secret = process.env.JWT_SECRET;

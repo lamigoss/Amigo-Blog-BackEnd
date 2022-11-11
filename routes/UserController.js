@@ -14,6 +14,8 @@ router.get("/", async (req, res) => {
 
 // HASH PW WHEN USER SIGNS UP
 router.post("/signup", async (req, res, next) => {
+  console.log(req.body);
+
   try {
     const password = await bcrypt.hash(req.body.password, 10);
     const user = await User.create({ ...req.body, password });

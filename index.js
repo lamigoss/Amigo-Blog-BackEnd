@@ -21,6 +21,7 @@ app.use("/api/posts", postController);
 
 const imageController = require("./routes/imageController");
 app.use("/api/images", imageController);
+//comment controller
 
 const commentController = require("./routes/comments");
 app.use("/api/comments", commentController);

@@ -5,14 +5,14 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 // MIDDLEWARE
-app.use(cors({
-  origin:"*",
-  methods:["GET", "POST"],
-}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("common"));
+app.use(cors({
+  origin:"https://chipper-hamster-d03de9.netlify.app",
+  methods:["GET", "POST"],
+}));
 
 // ROUTES
 //this is it

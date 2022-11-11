@@ -47,7 +47,7 @@ router.get("/:imageKey", async (req, res) => {
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
       img.imageUrl = url;
     }
-    res.send(image);
+    res.status(200).json(image);
   } catch (error) {
     console.log(error);
   }

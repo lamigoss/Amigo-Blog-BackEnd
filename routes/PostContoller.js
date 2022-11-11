@@ -3,7 +3,6 @@ const Post = require("../model/Post");
 
 //post create a new post
 router.post("/create/:id", async (req, res) => {
-  console.log(req.body);
   try {
     const savedPost = await Post.create({
       ...req.body,
@@ -50,7 +49,6 @@ router.put("/:id/:imageId",  async (req, res) => {
           imageId: req.params.imageId,
          }
          );
-         console.log("newpost: " + newPost);
          res.status(201).json(newPost);
   } catch (err) {
     console.log(err);

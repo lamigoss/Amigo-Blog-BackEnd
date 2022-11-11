@@ -56,22 +56,7 @@ router.put("/:id/:imageId",  async (req, res) => {
     res.status(403).json("you can only update your post");
   }
 });
-router.put("/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-      const newPost = await Post.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          postTitle: req.body.postTitle,
-          postDesc: req.body.postDesc,
-         }
-         );
-         res.status(201).json(newPost);
-  } catch (err) {
-    console.log(err);
-    res.status(403).json("you can only update your post");
-  }
-});
+
 
 //DELETE delete a post
 router.delete("/:id", async (req, res) => {

@@ -57,7 +57,7 @@ router.get("/post/:imageId", async (req, res) => {
   // find image by store Reference
   try {
     const image = await imageModel.findById(req.params.imageId);
-    res.send(image);
+    res.status(200).json(image);
   } catch (error) {
     console.log(error);
   }

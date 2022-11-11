@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("common"));
 app.use(cors({
-  origin:"https://chipper-hamster-d03de9.netlify.app",
-  methods:["GET", "POST"],
+  // origin:"https://chipper-hamster-d03de9.netlify.app",
+  // methods:["GET", "POST"],
 }));
 
 // ROUTES

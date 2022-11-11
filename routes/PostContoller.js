@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Post = require("../model/Post");
 
 //post create a new post
-router.post("/create/:id", async (req, res) => {
+router.post("/create", async (req, res) => {
   console.log(req.body);
   try {
     const savedPost = await Post.create({

@@ -10,12 +10,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("common"));
 app.use(cors({
-  // origin:"https://chipper-hamster-d03de9.netlify.app",
-  // methods:["GET", "POST"],
+
 }));
 
 // ROUTES
-//this is it
 const userController = require("./routes/UserController");
 app.use("/api/users", userController);
 
@@ -24,8 +22,8 @@ app.use("/api/posts", postController);
 
 const imageController = require("./routes/imageController");
 app.use("/api/images", imageController);
-//comment controller
 
+//comment controller
 const commentController = require("./routes/comments");
 app.use("/api/comments", commentController);
 
